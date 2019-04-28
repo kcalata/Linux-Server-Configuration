@@ -53,8 +53,37 @@ exit
 
 ### Give grader access
 6. Create a new user account named ```grader```.
+* In your terminal, run the following command: ```sudo adduser grader```.
+* Enter a password twice and fill out information for ```grader```.
 7. Give ```grader``` the permision to ```sudo```.
+* In your terminal, run the following command: ```sudo visudo```.
+* Under the line ```root ALL=(ALL:ALL) ALL```, add this line ```grader ALL=(ALL:ALL) ALL```.
+* Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
 8. Create an SSH key pair for ```grader``` using the ```ssh-keygen``` tool.
+* On the local machine:
+ * In your terminal, run the following commands:
+ ```
+ cd ~/.ssh
+ ssh-keygen -f ~/.ssh/grader_key.rsa
+ grader
+ grader
+ cat ~/.ssh/grader_key.rsa.pub
+ ```
+ * Copy the contents of ```grader_key.rsa.pub```
+ * On ubuntu's terminal, run the following commands:
+ ```
+ touch /home/grader/.ssh/authorized_keys
+ nano /home/grader/.ssh/authorized_keys
+ ```
+ * Paste the content into this file, save and exit.
+ * On ubuntu's terminal, run the following commands:
+ ```
+ sudo chmod 700 .ssh
+ sudo chmod 644 .ssh/authorized_keys
+ sudo chown -R grader:grader /home/grader.ssh
+ sudo service ssh restart
+ ```
+ * You are now able to ssh as grader by running the following command: ```ssh -i ~/.ssh/grader_key.rsa -p 2200 grader@34.229.188.86```
 
 ### Prepare to deploy your project
 9. Configure the local timezone to UTC.
