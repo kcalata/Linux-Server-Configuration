@@ -70,13 +70,13 @@ exit
  cat ~/.ssh/grader_key.rsa.pub
  ```
  * Copy the contents of ```grader_key.rsa.pub```
- * On ubuntu's terminal, run the following commands:
+ * On grader's terminal, run the following commands:
  ```
- touch /home/grader/.ssh/authorized_keys
- nano /home/grader/.ssh/authorized_keys
+ mkdir ~/.ssh
+ sudo nano ~/.ssh/authorized_keys
  ```
  * Paste the content into this file, save and exit.
- * On ubuntu's terminal, run the following commands:
+ * On graders's terminal, run the following commands:
  ```
  sudo chmod 700 .ssh
  sudo chmod 644 .ssh/authorized_keys
