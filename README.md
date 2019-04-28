@@ -23,8 +23,33 @@ You can visit 34.229.188.86
 
 ### Secure your server
 3. Update all currently installed packages.
+* In your terminal, run the following commands:
+```
+sudo apt-get update
+sudo apt-get upgrade
+```
 4. Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
+* Edit the ```/etc/ssh/sshd_config``` by running the following command: ```sudo nano /etc/ssh/sshd_config```.
+* Change the port number on line 5 from ```22``` to ```2200```.
+* Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
+* Restart the SSH connection by running the following command: ```sudo service ssh restart```.
 5. Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).
+* Run the following commands:
+```
+sudo ufw status
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 2200/tcp
+sudo ufw allow www
+sudo ufw allow 123/udp
+sudo ufw deny 22
+sudo ufw enable
+y
+exit
+```
+* Go to your Amazon Lightsail Instances and click on the three vertical dots in the instance and click on ```Manage```. Click on the ```Networking``` tab and change the firewall configuration to match the instance firewall settings above.
+* Allows ports 2200 (TCP), 80 (TCP), and 123 (UDP). Deny the default port 22.
+* In your terminal, run the following command: ```ssh -i ~/.ssh/udacity_key.rsa -p 2200 ubuntu@34.229.188.86```.
 
 ### Give grader access
 6. Create a new user account named ```grader```.
