@@ -141,10 +141,16 @@ app.run(host='0.0.0.0', port=8000)
 * Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
 * Run the following commmand: ```nano catalog.wsgi``` and add these lines:
 ```
+activate_this = '/var/www/catalog/catalog/venv3/bin/activate_this.py'
+with open(activate_this) as file_:
+    exec(file_.read(), dict(__file__=activate_this))
+
+#!/usr/bin/python
 import sys
 import logging
 logging.basicConfig(stream=sys.stderr)
-sys.path.insert(0, "/var/www/catalog/")
+sys.path.insert(0, "/var/www/catalog/catalog/")
+sys.path.insert(1, "/var/www/catalog/")
 
 from catalog import app as application
 application.secret_key = 'super_secret_key'
@@ -154,11 +160,11 @@ application.secret_key = 'super_secret_key'
 * Run the following commands:
 ```
 sudo apt-get install python3-pip
-sudo pip install virtualenv
-cd /var/www/catalog
-sudo virtualenv venv
-source venv/bin/activate
-sudo chmod -R 777 venv
+sudo pip install python-virtualenv
+cd /var/www/catalog/catalog
+sudo virtualenv -p python3 venv3
+sudo chown -R grader:grader venv3/
+. venv3/bin/activate
 ```
 16. Install Flask
 * Run the following command: ```pip install Flask```
@@ -167,29 +173,29 @@ sudo chmod -R 777 venv
 ```
 pip install httplib2
 pip install requests
-pip install oauth2client
+pip install --upgrade oauth2client
 pip install sqlalchemy
 sudo apt-get install libpq-dev
 pip install pyscopg2
+deactivate
 ```
 18. Configure and enable a new virtual host
+* Run the following command: ```sudo nano /etc/apache2/mods-enabled/wsgi.conf```
+* Below where it says ```#WSGIPythonPath directory|directory-1:directory-2:...``` add the following line: ```WSGIPythonPath /var/www/catalog/catalog/venv3/lib/python3.5/site-packages```
 * Run the following command: ```sudo nano /etc/apache2/sites-available/catalog.conf``` and paste the following code:
 ```
 <VirtualHost *:80>
     ServerName 52.54.46.55
-    ServerAlias ec2-52-54-46-55.compute-1.amazonaws.com
-    ServerAdmin admin@52.54.46.55
-    WSGIDaemonProcess catalog python-path=/var/www/catalog:/var/www/catalog/venv/lib/python2.7/site-packages
-    WSGIProcessGroup catalog
+  ServerAlias ec2-52-54-46-55.compute-1.amazonaws.com
     WSGIScriptAlias / /var/www/catalog/catalog.wsgi
     <Directory /var/www/catalog/catalog/>
-        Order allow,deny
-        Allow from all
+    	Order allow,deny
+  	  Allow from all
     </Directory>
     Alias /static /var/www/catalog/catalog/static
     <Directory /var/www/catalog/catalog/static/>
-        Order allow,deny
-        Allow from all
+  	  Order allow,deny
+  	  Allow from all
     </Directory>
     ErrorLog ${APACHE_LOG_DIR}/error.log
     LogLevel warn
@@ -198,6 +204,7 @@ pip install pyscopg2
 ```
 * Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
 * Run the following command: ```sudo a2ensite catalog```
+* Run the following command: ```sudo service apache2 reload```
 19. Install and configure PostgreSQL
 * Run the following commands:
 ```
