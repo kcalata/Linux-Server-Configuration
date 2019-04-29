@@ -87,9 +87,43 @@ exit
 
 ### Prepare to deploy your project
 9. Configure the local timezone to UTC.
+* Run the following command, ```sudo dpkg-reconfigure tzdata```, choose ```Etc``` or ```None of the above```, and finally ```UTC```.
 10. Install and configure Apache to server a Python mod_wsgi application.
+* While logged in as ```grader```, run the following command: ```sudo apt-get install apache2```.
+* If the Apache2 Ubuntu Default Page loads after entering ```34.229.188.86``` into the browser, Apache was successfully installed.
+* Run the following commands:
+```
+sudo apt-get install libapache2-mod-wsgi-py3
+sudo a2enmod wsgi
+```
 11. Install and configure PostgreSQL.
+* While logged in as ```grader```, run the following commands: 
+```
+sudo apt-get install postgresql
+sudo su - postgres
+psql
+CREATE ROLE catalog WITH LOGIN PASSWORD 'catalog';
+ALTER ROLE catalog CREATEDB;
+\q
+exit
+sudo adduser catalog
+catalog
+catalog
+catalog # catalog as full-name, default for everything else
+y
+sudo visudo
+```
+* Under the line ```grader ALL=(ALL:ALL) ALL``` add this new line ```catalog ALL=(ALL:ALL) ALL```.
+* Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
+* Run the following commands:
+```
+su - catalog
+catalog
+createdb catalog
+exit
+```
 12. Install ```git```.
+* While logged in as ```grader```, run the follow command: ```sudo apt-get install git```.
 
 ### Deploy the Item Catalog project.
 13. Clone and setup my Item Catalog project.
