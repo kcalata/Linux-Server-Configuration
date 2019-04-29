@@ -153,7 +153,6 @@ application.secret_key = 'super_secret_key'
 15. Install virtual environment
 * Run the following commands:
 ```
-sudo apt-get install python-pip
 sudo apt-get install python3-pip
 sudo pip install virtualenv
 cd /var/www/catalog
