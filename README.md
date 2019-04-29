@@ -84,17 +84,16 @@ sudo dpkg-reconfigure --priority=low unattended-upgrades
  cat ~/.ssh/grader_key.rsa.pub
  ```
  * Copy the contents of ```grader_key.rsa.pub```
- * On grader's terminal, run the following commands:
+ * On ubuntu's terminal, run the following commands:
  ```
- mkdir ~/.ssh
- sudo nano ~/.ssh/authorized_keys
+ touch /home/grader/.ssh/authorized_keys
  ```
  * Paste the content into this file, save and exit.
  * On graders's terminal, run the following commands:
  ```
- sudo chmod 700 .ssh
- sudo chmod 644 .ssh/authorized_keys
- sudo chown -R grader:grader /home/grader.ssh
+ sudo chmod 700 /home/grader/.ssh
+ sudo chmod 644 /home/grader/.ssh/authorized_keys
+ sudo chown -R grader:grader /home/grader/.ssh
  sudo service ssh restart
  ```
  * You are now able to ssh as grader by running the following command: ```ssh -i ~/.ssh/grader_key.rsa -p 2200 grader@52.54.46.55```
