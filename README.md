@@ -160,9 +160,9 @@ application.secret_key = 'super_secret_key'
 * Run the following commands:
 ```
 sudo apt-get install python3-pip
-sudo pip install python-virtualenv
+sudo pip install virtualenv
 cd /var/www/catalog/catalog
-sudo virtualenv -p python3 venv3
+virtualenv -p python3 venv3
 sudo chown -R grader:grader venv3/
 . venv3/bin/activate
 ```
