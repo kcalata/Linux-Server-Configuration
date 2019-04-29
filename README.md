@@ -220,8 +220,10 @@ REVOKE ALL ON SCHEMA public FROM public;
 GRANT ALL ON SCHEMA public TO catalog;
 \q
 exit
+. venv3/bin/activate
 python /var/www/catalog/catalog/database_setup.py
 sudo nano /etc/postgresql/9.5/main/pg_hba.conf
+deactivate
 ```
 * Paste the following into ```pg_hba.conf```:
 ```
