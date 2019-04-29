@@ -50,16 +50,30 @@ exit
 * Go to your Amazon Lightsail Instances and click on the three vertical dots in the instance and click on ```Manage```. Click on the ```Networking``` tab and change the firewall configuration to match the instance firewall settings above.
 * Allows ports 2200 (TCP), 80 (TCP), and 123 (UDP). Deny the default port 22.
 * In your terminal, run the following command: ```ssh -i ~/.ssh/udacity_key.rsa -p 2200 ubuntu@52.54.46.55```.
+6. Install fail2ban
+```
+sudo apt-get install fail2ban
+sudo apt-get install sendmail
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+sudo nano /etc/fail2ban/jail.local
+```
+* Set the ```destemail``` field to admin user's email address.
+* Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
+7. Set scripts to automatically manage package updates
+```
+sudo apt-get install unattended-upgrades
+sudo dpkg-reconfigure --priority=low unattended-upgrades
+```
 
 ### Give grader access
-6. Create a new user account named ```grader```.
+8. Create a new user account named ```grader```.
 * In your terminal, run the following command: ```sudo adduser grader```.
 * Enter a password twice and fill out information for ```grader```.
-7. Give ```grader``` the permision to ```sudo```.
+9. Give ```grader``` the permision to ```sudo```.
 * In your terminal, run the following command: ```sudo visudo```.
 * Under the line ```root ALL=(ALL:ALL) ALL```, add this line ```grader ALL=(ALL:ALL) ALL```.
 * Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
-8. Create an SSH key pair for ```grader``` using the ```ssh-keygen``` tool.
+10. Create an SSH key pair for ```grader``` using the ```ssh-keygen``` tool.
 * On the local machine:
  * In your terminal, run the following commands:
  ```
@@ -86,9 +100,9 @@ exit
  * You are now able to ssh as grader by running the following command: ```ssh -i ~/.ssh/grader_key.rsa -p 2200 grader@52.54.46.55```
 
 ### Prepare to deploy your project
-9. Configure the local timezone to UTC.
+11. Configure the local timezone to UTC.
 * Run the following command, ```sudo dpkg-reconfigure tzdata```, choose ```Etc``` or ```None of the above```, and finally ```UTC```.
-10. Install and configure Apache to server a Python mod_wsgi application.
+12. Install and configure Apache to server a Python mod_wsgi application.
 * While logged in as ```grader```, run the following command: ```sudo apt-get install apache2```.
 * If the Apache2 Ubuntu Default Page loads after entering ```52.54.46.55``` into the browser, Apache was successfully installed.
 * Run the following commands:
@@ -97,11 +111,11 @@ sudo apt-get install libapache2-mod-wsgi-py3
 sudo a2enmod wsgi
 sudo service apache2 start
 ```
-11. Install ```git```.
+13. Install ```git```.
 * While logged in as ```grader```, run the follow command: ```sudo apt-get install git```.
 
 ### Deploy the Item Catalog project.
-12. Clone and setup my Item Catalog project.
+14. Clone and setup my Item Catalog project.
 * While logged in as ```grader```, run the following commands:
 ```
 sudo mkdir /var/www/catalog
@@ -137,7 +151,7 @@ from catalog import app as application
 application.secret_key = 'super_secret_key'
 ```
 * Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
-13. Install virtual environment
+15. Install virtual environment
 * Run the following commands:
 ```
 sudo apt-get install python-pip
@@ -148,9 +162,9 @@ sudo virtualenv venv
 source venv/bin/activate
 sudo chmod -R 777 venv
 ```
-14. Install Flask
+16. Install Flask
 * Run the following command: ```pip install Flask```
-15. Install the project's dependencies
+17. Install the project's dependencies
 * Run the following command:
 ```
 pip install httplib2
@@ -160,7 +174,7 @@ pip install sqlalchemy
 sudo apt-get install libpq-dev
 pip install pyscopg2
 ```
-16. Configure and enable a new virtual host
+18. Configure and enable a new virtual host
 * Run the following command: ```sudo nano /etc/apache2/sites-available/catalog.conf``` and paste the following code:
 ```
 <VirtualHost *:80>
@@ -186,7 +200,7 @@ pip install pyscopg2
 ```
 * Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
 * Run the following command: ```sudo a2ensite catalog```
-17. Install and configure PostgreSQL
+19. Install and configure PostgreSQL
 * Run the following commands:
 ```
 sudo apt-get install libpq-dev python-dev
@@ -213,3 +227,5 @@ host    all             all             ::1/128                 md5
 ```
 * Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
 * Run the following command: ```sudo service apache2 restart```
+
+#### Special thanks to [iliketomatoes](https://github.com/iliketomatoes/linux_server_configuration) for his detailed README
