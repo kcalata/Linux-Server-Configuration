@@ -140,7 +140,7 @@ app.run(host='0.0.0.0', port=8000)
 * Near the bottom of ```database_setup.py``` is the line: ```engine = create_engine('sqlite:///itemcatalog.db')```
 * Replace the line with the following line: ```engine = create_engine('postgresql://catalog:catalog@localhost/catalog')```
 * Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
-* Run the following commmand: ```nano catalog.wsgi``` and add these lines:
+* Run the following commmand: ```sudo nano /var/www/catalog/catalog.wsgi``` and add these lines:
 ```
 activate_this = '/var/www/catalog/catalog/venv3/bin/activate_this.py'
 with open(activate_this) as file_:
@@ -188,7 +188,7 @@ deactivate
 <VirtualHost *:80>
     ServerName 52.54.46.55
   ServerAlias ec2-52-54-46-55.compute-1.amazonaws.com
-    WSGIScriptAlias / /var/www/catalog/catalog/catalog.wsgi
+    WSGIScriptAlias / /var/www/catalog/catalog.wsgi
     <Directory /var/www/catalog/catalog/>
     	Order allow,deny
   	  Allow from all
