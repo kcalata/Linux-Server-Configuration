@@ -133,8 +133,8 @@ app.debug = True
 app.run(host='0.0.0.0', port=8000)
 ```
 * Delete the two lines and add the following line: ```app.run()```.
-* Near the top of ```__init__.py``` is the line: ```engine = create_engine('sqlite:///itemcatalog.db')```
-* Replace the line with the following line: ```engine = create_engine('postgresql://catalog:catalog@localhost/catalog',connect_args={'check_same_thread': False})```
+* Near the top of ```__init__.py``` is the line: ```engine = create_engine('sqlite:///itemcatalog.db',connect_args={'check_same_thread': False})```
+* Replace the line with the following line: ```engine = create_engine('postgresql://catalog:catalog@localhost/catalog')```
 * Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
 * Run the following command: ```nano database_setup.py```.
 * Near the bottom of ```database_setup.py``` is the line: ```engine = create_engine('sqlite:///itemcatalog.db')```
