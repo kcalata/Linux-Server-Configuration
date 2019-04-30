@@ -31,6 +31,7 @@ sudo apt-get upgrade
 4. Change the SSH port from 22 to 2200. Make sure to configure the Lightsail firewall to allow it.
 * Edit the ```/etc/ssh/sshd_config``` by running the following command: ```sudo nano /etc/ssh/sshd_config```.
 * Change the port number on line 5 from ```22``` to ```2200```.
+* Find the ```PermitRootLogin``` and edit it to ```no```.
 * Save and exit using ```CTRL+X``` and confirm the changes with ```Y```.
 * Restart the SSH connection by running the following command: ```sudo service ssh restart```.
 5. Configure the Uncomplicated Firewall (UFW) to only allow incoming connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).
@@ -187,7 +188,7 @@ deactivate
 <VirtualHost *:80>
     ServerName 52.54.46.55
   ServerAlias ec2-52-54-46-55.compute-1.amazonaws.com
-    WSGIScriptAlias / /var/www/catalog/catalog.wsgi
+    WSGIScriptAlias / /var/www/catalog/catalog/catalog.wsgi
     <Directory /var/www/catalog/catalog/>
     	Order allow,deny
   	  Allow from all
